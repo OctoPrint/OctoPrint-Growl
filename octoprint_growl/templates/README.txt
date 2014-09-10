@@ -1,0 +1,1 @@
+Template files for settings dialog will reside here

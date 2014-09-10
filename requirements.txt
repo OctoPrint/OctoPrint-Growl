@@ -1,0 +1,2 @@
+OctoPrint>=1.2.0-dev
+gntp==1.0.2
