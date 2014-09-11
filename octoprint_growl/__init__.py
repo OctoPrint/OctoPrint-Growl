@@ -73,6 +73,17 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 			self.logger.exception("Could not register with Growl at {host}:{port}, disabling...".format(host=host, port=port))
 			self.growl = None
 
+	#~~ TemplatePlugin API
+
+	def get_template_vars(self):
+		return dict(
+			_settings_menu_entry="Growl"
+		)
+
+	def get_template_folder(self):
+		import os
+		return os.path.join(os.path.dirname(os.path.realpath(__file__)), "templates")
+
 	#~~ SimpleApiPlugin API
 
 	def get_api_commands(self):
