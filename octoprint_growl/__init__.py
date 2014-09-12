@@ -16,7 +16,7 @@ default_settings = {
 	"port": None,
 	"password": None,
 }
-s = octoprint.plugin.plugin_settings("discovery", defaults=default_settings)
+s = octoprint.plugin.plugin_settings("growl", defaults=default_settings)
 
 class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
                   octoprint.plugin.StartupPlugin,
