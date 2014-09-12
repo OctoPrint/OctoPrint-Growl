@@ -66,7 +66,7 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 			self.growl = gntp.notifier.GrowlNotifier(**kwargs)
 			self.growl.register()
 
-			helpers = octoprint.plugin.plugin_manager().get_helpers("discovery", helpers=["zeroconf_browse"])
+			helpers = octoprint.plugin.plugin_manager().get_helpers("discovery", "zeroconf_browse")
 			if helpers and "zeroconf_browse" in helpers:
 				self.zeroconf_browse = helpers["zeroconf_browse"]
 		except:
