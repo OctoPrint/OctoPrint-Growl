@@ -1,0 +1,2 @@
+recursive-include octoprint_growl/static *
+recursive-include octoprint_growl/templates *

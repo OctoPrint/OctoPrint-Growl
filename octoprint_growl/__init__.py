@@ -154,5 +154,4 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 
 __plugin_name__ = "Growl"
 __plugin_description__ = "Get Growl notifications from OctoPrint"
-
 __plugin_implementations__ = [GrowlPlugin()]
