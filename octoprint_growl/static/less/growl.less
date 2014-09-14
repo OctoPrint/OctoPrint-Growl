@@ -1,0 +1,34 @@
+table {
+  th, td {
+    // log files
+    &.settings_plugin_growl_instances_name {
+      text-overflow: ellipsis;
+      text-align: left;
+    }
+
+    &.settings_plugin_growl_instances_host {
+      text-align: left;
+      width: 150px;
+    }
+
+    &.settings_plugin_growl_instances_port {
+      text-align: right;
+      width: 70px;
+    }
+
+    &.settings_plugin_growl_instances_action {
+      text-align: center;
+      width: 100px;
+
+      a {
+        text-decoration: none;
+        color: #000;
+
+        &.disabled {
+          color: #ccc;
+          cursor: default;
+        }
+      }
+    }
+  }
+}

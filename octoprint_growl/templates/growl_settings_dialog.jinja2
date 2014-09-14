@@ -1,1 +1,54 @@
-Here be growling dragons (TODO: settings dialog)
+<div id="settings_plugin_growl_dialog" data-bind="allowBindings: true">
+    <h2>{{ _('Discovered Growl Instances') }}</h2>
+
+    <div data-bind="visible: !browsingEnabled()">
+        {{ _('Discovery not available, please <a href="%%(url)s">setup Bonjour support for the discovery plugin</a>.')|format(url='https://github.com/foosel/OctoPrint/wiki/Plugin:-Discovery') }}
+    </div>
+
+    <table class="table table-striped table-hover table-condensed table-hover" id="settings_plugin_growl_instances" data-bind="visible: browsingEnabled()">
+        <thead>
+        <tr>
+            <th class="settings_plugin_growl_instances_name">{{ _('Name') }}</th>
+            <th class="settings_plugin_growl_instances_host">{{ _('Host') }}</th>
+            <th class="settings_plugin_growl_instances_port">{{ _('Port') }}</th>
+            <th class="settings_plugin_growl_instances_action">{{ _('Action') }}</th>
+        </tr>
+        </thead>
+        <tbody data-bind="foreach: listHelper.paginatedItems">
+        <tr data-bind="attr: {title: name}">
+            <td class="settings_plugin_growl_instances_name" data-bind="text: name"></td>
+            <td class="settings_plugin_growl_instances_host" data-bind="text: host"></td>
+            <td class="settings_plugin_growl_instances_port" data-bind="text: port"></td>
+            <td class="settings_plugin_growl_instances_action">
+                <button class="btn btn-small" data-bind="click: function() { $root.chooseInstance($data); }">{{ _('Choose') }}</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>{{ _('Configuration') }}</h2>
+
+    <form class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label" for="settings-growl-host">{{ _('Host') }}</label>
+            <div class="controls">
+                <input type="text" class="input-block-level" data-bind="value: settings.plugins.growl.hostname" id="settings-growl-host">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="settings-growl-port">{{ _('Port') }}</label>
+            <div class="controls">
+                <input type="number" class="input-block-level" data-bind="value: settings.plugins.growl.port" id="settings-growl-port">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="settings-growl-password">{{ _('Password') }}</label>
+            <div class="controls">
+                <input type="password" class="input-block-level" data-bind="value: settings.plugins.growl.password" id="settings-growl-password">
+            </div>
+        </div>
+    </form>
+
+    <button class="btn" data-bind="click: function() { testConfiguration() }"><i class="icon-spinner icon-spin" data-bind="visible: testActive()"></i> {{ _('Send test notification') }}</button> <span data-bind="visible: testResult() && testSuccessful()">{{ _('Sent successfully') }}</span><span data-bind="visible: testResult() && !testSuccessful()">{{ _('Sending failed') }}: <span data-bind="text: testMessage"></span></span>
+
+</div>
