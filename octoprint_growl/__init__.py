@@ -140,7 +140,13 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 		if "password" in data:
 			s.set(["password"], data["password"])
 
-		self.growl = self._register_growl(s.get(["hostname"]), s.getInt(["port"]), password=s.get(["password"]))
+		def register(host, port, password):
+			self.growl = self._register_growl(host, port, password=password)
+
+		import threading
+		thread = threading.Thread(target=register, args=(s.get(["hostname"]), s.getInt(["port"]), s.get(["password"])))
+		thread.daemon = False
+		thread.start()
 
 	#~~ EventPlugin API
 
