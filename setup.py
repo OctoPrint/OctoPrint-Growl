@@ -25,7 +25,7 @@ def params():
 	license = "AGPLv3"
 
 	packages = ["octoprint_growl"]
-	package_data = {"octoprint": package_data_dirs('octoprint_growl', ['static', 'templates'])}
+	package_data = {"octoprint_growl": package_data_dirs('octoprint_growl', ['static', 'templates'])}
 
 	include_package_data = True
 	zip_safe = False
