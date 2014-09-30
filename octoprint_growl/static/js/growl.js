@@ -1,5 +1,5 @@
 $(function() {
-    function NetconnectdViewModel(parameters) {
+    function GrowlViewModel(parameters) {
         var self = this;
 
         self.loginState = parameters[0];
@@ -105,5 +105,5 @@ $(function() {
     }
 
     // view model class, parameters for constructor, container to bind to
-    ADDITIONAL_VIEWMODELS.push([NetconnectdViewModel, ["loginStateViewModel", "settingsViewModel"], document.getElementById("settings_plugin_growl_dialog")]);
+    ADDITIONAL_VIEWMODELS.push([GrowlViewModel, ["loginStateViewModel", "settingsViewModel"], document.getElementById("settings_plugin_growl_dialog")]);
 });
