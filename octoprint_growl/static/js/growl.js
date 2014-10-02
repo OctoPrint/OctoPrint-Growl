@@ -95,7 +95,6 @@ $(function() {
 
         self.onBeforeBinding = function() {
             self.settings = self.settingsViewModel.settings;
-            self.requestData();
         };
 
         self.onSettingsShown = function() {
