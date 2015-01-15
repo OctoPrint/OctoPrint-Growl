@@ -62,18 +62,13 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 
 	def get_template_vars(self):
 		return dict(
-			_settings_menu_entry="Growl"
+			_settings=dict(
+				name="Growl",
+				custom_bindings=True
+			)
 		)
 
-	def get_template_folder(self):
-		import os
-		return os.path.join(os.path.dirname(os.path.realpath(__file__)), "templates")
-
 	##~~ AssetPlugin API
-
-	def get_asset_folder(self):
-		import os
-		return os.path.join(os.path.dirname(os.path.realpath(__file__)), "static")
 
 	def get_assets(self):
 		return {
