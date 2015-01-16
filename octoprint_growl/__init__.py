@@ -58,16 +58,6 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 		self.growl, _ = self._register_growl(host, port, password=password)
 
 
-	#~~ TemplatePlugin API
-
-	def get_template_vars(self):
-		return dict(
-			_settings=dict(
-				name="Growl",
-				custom_bindings=True
-			)
-		)
-
 	##~~ AssetPlugin API
 
 	def get_assets(self):
