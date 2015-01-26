@@ -17,11 +17,11 @@ def params():
 	name = "OctoPrint-Growl"
 	version = "0.1.0"
 
-	description = "Adds support for Growl/GNTP to OctoPrint"
+	description = "Get Growl/GNTP notifications from OctoPrint"
 	long_description = "TODO"
 	author = "Gina Häußge"
 	author_email = "osd@foosel.net"
-	url = "http://octoprint.org"
+	url = "http://github.com/OctoPrint/OctoPrint-Growl"
 	license = "AGPLv3"
 
 	packages = ["octoprint_growl"]
