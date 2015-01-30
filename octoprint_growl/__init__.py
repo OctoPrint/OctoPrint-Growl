@@ -6,17 +6,9 @@ __license__ = 'GNU Affero General Public License http://www.gnu.org/licenses/agp
 __copyright__ = "Copyright (C) 2014 The OctoPrint Project - Released under terms of the AGPLv3 License"
 
 import flask
-import logging
 
 import octoprint.plugin
 import octoprint.events
-
-default_settings = {
-	"hostname": "localhost",
-	"port": 23053,
-	"password": None,
-}
-s = octoprint.plugin.plugin_settings("growl", defaults=default_settings)
 
 class GrowlMessages(object):
 	TEST = "Connection test"
@@ -32,8 +24,6 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
                   octoprint.plugin.TemplatePlugin,
                   octoprint.plugin.AssetPlugin):
 	def __init__(self):
-		self.logger = logging.getLogger("octoprint.plugins." + __name__)
-
 		self.host = None
 		self.port = None
 		self.growl = None
@@ -47,16 +37,25 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 		self.port = port
 
 	def on_after_startup(self):
-		host = s.get(["hostname"])
-		port = s.getInt(["port"])
-		password = s.get(["password"])
+		host = self._settings.get(["hostname"])
+		port = self._settings.getInt(["port"])
+		password = self._settings.get(["password"])
 
-		helpers = octoprint.plugin.plugin_manager().get_helpers("discovery", "zeroconf_browse")
+		helpers = self._plugin_manager.get_helpers("discovery", "zeroconf_browse")
 		if helpers and "zeroconf_browse" in helpers:
 			self.zeroconf_browse = helpers["zeroconf_browse"]
 
 		self.growl, _ = self._register_growl(host, port, password=password)
 
+	##~~ SettingsPlugin API
+
+	def get_settings_defaults(self):
+		return {
+			"hostname": "localhost",
+			"port": 23053,
+			"password": None,
+		    "timeout": 10
+		}
 
 	##~~ AssetPlugin API
 
@@ -87,7 +86,7 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 					)
 					return flask.jsonify(dict(success=True))
 				except Exception as e:
-					self.logger.exception("Sending test message to Growl instance on {host}:{port} failed".format(host=data["host"], port=data["port"]))
+					self._logger.exception("Sending test message to Growl instance on {host}:{port} failed".format(host=data["host"], port=data["port"]))
 					return flask.jsonify(dict(success=False, msg=str(e.message)))
 			else:
 				return flask.jsonify(dict(success=False, msg=str(message)))
@@ -110,26 +109,14 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 
 	##~~ SettingsPlugin API
 
-	def on_settings_load(self):
-		return dict(
-			hostname=s.get(["hostname"]),
-			port=s.getInt(["port"]),
-			password=s.get(["password"])
-		)
-
 	def on_settings_save(self, data):
-		if "hostname" in data and data["hostname"]:
-			s.set(["hostname"], data["hostname"])
-		if "port" in data and data["port"]:
-			s.setInt(["port"], data["port"])
-		if "password" in data:
-			s.set(["password"], data["password"])
+		super(GrowlPlugin, self).on_settings_save(data)
 
 		def register(host, port, password):
 			self.growl = self._register_growl(host, port, password=password)
 
 		import threading
-		thread = threading.Thread(target=register, args=(s.get(["hostname"]), s.getInt(["port"]), s.get(["password"])))
+		thread = threading.Thread(target=register, args=(self._settings.get(["hostname"]), self._settings.getInt(["port"]), self._settings.get(["password"])))
 		thread.daemon = False
 		thread.start()
 
@@ -195,16 +182,16 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 		if public_address:
 			kwargs["applicationIcon"] = "http://{host}:{port}/static/img/tentacle-32x32.png".format(host=public_address, port=self.port)
 
-		self.logger.debug("Sending applicationIcon = {applicationIcon}".format(**kwargs))
+		self._logger.debug("Sending applicationIcon = {applicationIcon}".format(**kwargs))
 
 		try:
 			import gntp.notifier
 			growl = gntp.notifier.GrowlNotifier(**kwargs)
-			growl.socketTimeout = 5
+			growl.socketTimeout = self._settings.getInt(["timeout"])
 			growl.register()
 			return growl, None
 		except Exception as e:
-			self.logger.warn("Could not register with Growl at {host}:{port}: {msg}".format(host=host, port=port, msg=e.message))
+			self._logger.warn("Could not register with Growl at {host}:{port}: {msg}".format(host=host, port=port, msg=e.message))
 			return None, e.message
 
 
