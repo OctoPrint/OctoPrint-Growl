@@ -197,4 +197,4 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 
 
 __plugin_name__ = "Growl"
-__plugin_implementations__ = [GrowlPlugin()]
+__plugin_implementation__ = GrowlPlugin()
