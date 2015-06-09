@@ -166,6 +166,25 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 			priority = 1
 		)
 
+	##~~ Softwareupdate hook
+
+	def get_update_information(self):
+		return dict(
+			growl=dict(
+				displayName="Growl Plugin",
+				displayVersion=self._plugin_version,
+
+				# version check: github repository
+				type="github_release",
+				user="OctoPrint",
+				repo="OctoPrint-Growl",
+				current=self._plugin_version,
+
+				# update method: pip
+				pip="https://github.com/OctoPrint/OctoPrint-Growl/archive/{target_version}.zip"
+			)
+		)
+
 	##~~ Helpers
 
 	def _register_growl(self, host, port, password):
@@ -197,4 +216,11 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 
 
 __plugin_name__ = "Growl"
-__plugin_implementation__ = GrowlPlugin()
+def __plugin_load__():
+	global __plugin_implementation__
+	__plugin_implementation__ = GrowlPlugin()
+
+	global __plugin_hooks__
+	__plugin_hooks__ = {
+		"octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
+	}
