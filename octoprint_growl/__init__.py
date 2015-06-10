@@ -38,7 +38,7 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 
 	def on_after_startup(self):
 		host = self._settings.get(["hostname"])
-		port = self._settings.getInt(["port"])
+		port = self._settings.get_int(["port"])
 		password = self._settings.get(["password"])
 
 		helpers = self._plugin_manager.get_helpers("discovery", "zeroconf_browse")
@@ -116,7 +116,7 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 			self.growl = self._register_growl(host, port, password=password)
 
 		import threading
-		thread = threading.Thread(target=register, args=(self._settings.get(["hostname"]), self._settings.getInt(["port"]), self._settings.get(["password"])))
+		thread = threading.Thread(target=register, args=(self._settings.get(["hostname"]), self._settings.get_int(["port"]), self._settings.get(["password"])))
 		thread.daemon = False
 		thread.start()
 
@@ -206,7 +206,7 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 		try:
 			import gntp.notifier
 			growl = gntp.notifier.GrowlNotifier(**kwargs)
-			growl.socketTimeout = self._settings.getInt(["timeout"])
+			growl.socketTimeout = self._settings.get_int(["timeout"])
 			growl.register()
 			return growl, None
 		except Exception as e:
