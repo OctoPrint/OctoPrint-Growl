@@ -110,7 +110,7 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 	##~~ SettingsPlugin API
 
 	def on_settings_save(self, data):
-		super(GrowlPlugin, self).on_settings_save(data)
+		octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
 
 		def register(host, port, password):
 			self.growl = self._register_growl(host, port, password=password)
@@ -200,8 +200,7 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 		public_address = octoprint.util.address_for_client(host, port)
 		if public_address:
 			kwargs["applicationIcon"] = "http://{host}:{port}/static/img/tentacle-32x32.png".format(host=public_address, port=self.port)
-
-		self._logger.debug("Sending applicationIcon = {applicationIcon}".format(**kwargs))
+			self._logger.debug("Sending applicationIcon = {applicationIcon}".format(**kwargs))
 
 		try:
 			import gntp.notifier
