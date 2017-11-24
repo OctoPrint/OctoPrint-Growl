@@ -1,6 +1,10 @@
 # OctoPrint Growl Plugin Changelog
 
-## 0.1.1 (unreleased)
+## 0.1.1 (2017-11-24)
+
+### Bug fixes
+
+  * [#6](https://github.com/OctoPrint/OctoPrint-Growl/issues/6) - Fixed missing tentacle icon on registration
 
 ### Improvements
 
