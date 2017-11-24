@@ -6,6 +6,7 @@ __license__ = 'GNU Affero General Public License http://www.gnu.org/licenses/agp
 __copyright__ = "Copyright (C) 2014 The OctoPrint Project - Released under terms of the AGPLv3 License"
 
 import flask
+import os
 
 import octoprint.plugin
 import octoprint.events
@@ -24,17 +25,12 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
                   octoprint.plugin.TemplatePlugin,
                   octoprint.plugin.AssetPlugin):
 	def __init__(self):
-		self.host = None
-		self.port = None
 		self.growl = None
+		self.icon = None
 
 		self.zeroconf_browse = None
 
 	#~~ StartupPlugin API
-
-	def on_startup(self, host, port):
-		self.host = host
-		self.port = port
 
 	def on_after_startup(self):
 		host = self._settings.get(["hostname"])
@@ -44,6 +40,14 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 		helpers = self._plugin_manager.get_helpers("discovery", "zeroconf_browse")
 		if helpers and "zeroconf_browse" in helpers:
 			self.zeroconf_browse = helpers["zeroconf_browse"]
+
+		icon_path = os.path.abspath(os.path.join(os.path.dirname(octoprint.plugin.__file__),
+		                                         "..", "static", "img", "tentacle-32x32.png"))
+		try:
+			with open(icon_path, "rb") as f:
+				self.icon = f.read()
+		except:
+			self._logger.exception("Error while reading application icon from {}".format(icon_path))
 
 		self.growl, _ = self._register_growl(host, port, password=password)
 
@@ -196,11 +200,9 @@ class GrowlPlugin(octoprint.plugin.EventHandlerPlugin,
 			port=port,
 			password=password
 		)
-		import octoprint.util
-		public_address = octoprint.util.address_for_client(host, port)
-		if public_address:
-			kwargs["applicationIcon"] = "http://{host}:{port}/static/img/tentacle-32x32.png".format(host=public_address, port=self.port)
-			self._logger.debug("Sending applicationIcon = {applicationIcon}".format(**kwargs))
+
+		if self.icon:
+			kwargs["applicationIcon"] = self.icon
 
 		try:
 			import gntp.notifier
