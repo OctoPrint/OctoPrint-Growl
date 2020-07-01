@@ -1,12 +1,6 @@
-**⚠ Up for adoption! ⚠**
-
-I have my hands way too full with OctoPrint's maintenance to give this plugin the attention it needs. Hence I'm looking for a new maintainer to adopt it. [Please get in touch here](https://github.com/OctoPrint/OctoPrint-Growl/issues/7).
-
----
-
 > ✋ **Provided as is, no support, no maintenance, issues will be auto-closed**
-
----
+>
+> [Interested in taking over maintenance?](https://github.com/OctoPrint/OctoPrint-Growl/issues/7)
 
 # Growl plugin for OctoPrint
 
