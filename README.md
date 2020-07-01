@@ -4,6 +4,10 @@ I have my hands way too full with OctoPrint's maintenance to give this plugin th
 
 ---
 
+> ✋ **Provided as is, no support, no maintenance, issues will be auto-closed**
+
+---
+
 # Growl plugin for OctoPrint
 
 ![Growl plugin: Settings dialog with discovered local Growl instances](http://i.imgur.com/glZq5zJl.png)
